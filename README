@@ -1,0 +1,12 @@
+
+CAmkES Documentation
+https://github.com/seL4/camkes-tool/blob/master/docs/index.md
+http://sel4.systems/Info/CAmkES/GettingStarted.pml
+http://sel4.systems/Info/CAmkES/Tutorial.pml
+
+```
+mkdir camkes-project
+cd camkes-project
+repo init -u https://github.com/seL4/camkes-manifest.git
+repo sync
+```

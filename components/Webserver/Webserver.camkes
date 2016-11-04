@@ -1,0 +1,12 @@
+/*------------------------------------------------------------------------------
+* Webserver.camkes
+*
+*-----------------------------------------------------------------------------*/
+
+import "../../interfaces/ISensor.idl4";
+
+component Webserver {
+    control;
+    uses ISensor sensor;
+    dataport Buf settings;
+}

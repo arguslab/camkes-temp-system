@@ -1,0 +1,32 @@
+/*------------------------------------------------------------------------------
+* temp_system.camkes
+*
+*-----------------------------------------------------------------------------*/
+
+import <std_connector.camkes>;
+
+import "components/Alarm/Alarm.camkes";
+import "components/Controller/Controller.camkes";
+import "components/Heater/Heater.camkes";
+import "components/Sensor/Sensor.camkes";
+import "components/Webserver/Webserver.camkes";
+
+assembly {
+  composition {
+    component Alarm alarm;
+    component Controller controller;
+    component Heater heater;
+    component Sensor sensor;
+    component Webserver webserver;
+
+    connection seL4RPC c1(from controller.sensor, to sensor.data);
+    connection seL4RPC c2(from controller.alarm, to alarm.action);
+    connection seL4RPC c3(from controller.heater, to heater.action);
+    connection seL4RPC c4(from webserver.sensor, to sensor.data);
+    connection seL4SharedData c5(from webserver.settings, to controller.settings);
+  }
+  configuration {
+  		c5.from_access = "RW";
+  		c5.to_access = "R";
+  }
+}

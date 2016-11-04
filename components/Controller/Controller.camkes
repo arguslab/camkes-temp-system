@@ -1,0 +1,16 @@
+/*------------------------------------------------------------------------------
+* Controller.camkes
+*
+*-----------------------------------------------------------------------------*/
+
+import "../../interfaces/IAlarm.idl4";
+import "../../interfaces/IHeater.idl4";
+import "../../interfaces/ISensor.idl4";
+
+component Controller {
+    control;
+    uses ISensor sensor;
+    uses IHeater heater;
+    uses IAlarm alarm;
+    dataport Buf settings;
+}
