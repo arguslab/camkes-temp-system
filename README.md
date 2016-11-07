@@ -8,12 +8,17 @@ repo init -u https://github.com/seL4/camkes-manifest.git
 repo sync
 ```
 
-Clone this repository in the apps folder of the camkes-project directory.
+Clone this repository in the apps folder of the camkes-project directory. Rename the app folder:
+
+```
+mv apps/camkes-temp-system apps/temp_system
+```
+
 
 Add a source line to the top-level Kconfig under the applications menu that references this file:
 
 ```
-source "apps/camkes-temp-system/Kconfig"
+source "apps/temp_system/Kconfig"
 ```
 
 Run the following commands to make a configuration:
