@@ -4,7 +4,10 @@
 *-----------------------------------------------------------------------------*/
 
 import "../../interfaces/ISensor.idl4";
+import "../../interfaces/ITimer.idl4";
 
 component Sensor {
-        provides ISensor data;
+  control;
+  provides ISensor data;
+  uses timer_inf hello;
 }

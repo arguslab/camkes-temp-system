@@ -3,11 +3,11 @@
 #include <stdlib.h>
 
 
-int run() {
-  printf("Webserver Started\n");
-  printf("-------------------\n");
+int run()
+{
+  printf("Webserver: started.\n");
 
-  printf("Sensor data: 0x%08x", sensor_read());
+  *(int *)settings = 80;
 
   return 0;
 }

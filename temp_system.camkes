@@ -9,6 +9,7 @@ import "components/Alarm/Alarm.camkes";
 import "components/Controller/Controller.camkes";
 import "components/Heater/Heater.camkes";
 import "components/Sensor/Sensor.camkes";
+import "components/Timer/Timer.camkes";
 import "components/Webserver/Webserver.camkes";
 
 assembly {
@@ -18,15 +19,32 @@ assembly {
     component Heater heater;
     component Sensor sensor;
     component Webserver webserver;
+    component Timerbase timerbase;
+    component Timer timer;
 
     connection seL4RPC c1(from controller.sensor, to sensor.data);
     connection seL4RPC c2(from controller.alarm, to alarm.action);
     connection seL4RPC c3(from controller.heater, to heater.action);
     connection seL4RPC c4(from webserver.sensor, to sensor.data);
     connection seL4SharedData c5(from webserver.settings, to controller.settings);
+
+    connection seL4RPCCall c6(from sensor.hello, to timer.hello);
+    connection seL4RPCCall c7(from controller.hello, to timer.hello);
+
+    connection seL4HardwareMMIO timer_mem(from timer.reg, to timerbase.reg);
+    connection seL4HardwareInterrupt timer_irq(from timerbase.irq, to timer.irq);
   }
   configuration {
   		c5.from_access = "RW";
   		c5.to_access = "R";
+
+      /* find out the device memory address and IRQ number from the hardware data sheet. look at
+      * https://github.com/seL4/camkes-tool/blob/2.1.0/docs/index.md#hardware-components
+      */
+      timerbase.reg_attributes = "0x53F98000:0x1000"; //device memory
+      timerbase.irq_attributes	= 27;		       //Timer interrupt
+
+      /* assign an initial value to semaphore */
+      timer.sem_value = 0;
   }
 }

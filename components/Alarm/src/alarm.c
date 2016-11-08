@@ -1,53 +1,18 @@
-/*
- * Copyright 2014, NICTA
- *
- * This software may be distributed and modified according to the terms of
- * the BSD 2-Clause license. Note that NO WARRANTY is provided.
- * See "LICENSE_BSD2.txt" for details.
- *
- * @TAG(NICTA_BSD)
- */
+/*------------------------------------------------------------------------------
+* alarm.c
+*
+*-----------------------------------------------------------------------------*/
 
 #include <camkes.h>
 #include <string.h>
 
 
-void action_start() {
-
+void action_start()
+{
+  printf("Alarm: started. \r\n");
 }
 
-void action_stop() {
-
+void action_stop()
+{
+  printf("Alarm: stopped. \r\n");
 }
-
-// void b__init(void) {
-// }
-//
-// char * b_echo_string(const char *s) {
-//     return strdup(s);
-// }
-//
-// int b_echo_int(int i) {
-//     return i;
-// }
-//
-// float b_echo_float(float f) {
-//     return f;
-// }
-//
-// double b_echo_double(double d) {
-//     return d;
-// }
-//
-// int b_echo_mix(double d) {
-//     return d;
-// }
-//
-// int b_echo_parameter(int pin, int *pout) {
-//     *pout = pin;
-//     return pin;
-// }
-//
-// void b_increment_parameter(int *x) {
-//     *x = *x + 1;
-// }
