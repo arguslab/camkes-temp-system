@@ -12,6 +12,7 @@
 #include <string.h>
 
 
-void action_set_speed(int v) {
-
+void action_set_speed(int v)
+{
+  printf("Heater: fan set to %i RPM.\n", v);
 }

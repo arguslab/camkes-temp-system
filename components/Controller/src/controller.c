@@ -19,6 +19,8 @@ int run()
     int data = sensor_read();
     printf("Controller: sensor reads %i degrees. \r\n",  data);
 
+    heater_set_speed((100-data)*100);
+
     if(!alarm_started && data >= *(int *)settings)
     {
       alarm_start();
