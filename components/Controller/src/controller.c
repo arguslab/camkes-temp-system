@@ -15,7 +15,7 @@ int run()
 
   while(1)
   {
-    hello_sleep(1);
+    timer_sleep_s(1);
     int data = sensor_read();
     printf("Controller: sensor reads %i degrees. \r\n",  data);
 

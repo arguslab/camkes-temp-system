@@ -13,6 +13,6 @@ component Controller {
     uses ISensor sensor;
     uses IHeater heater;
     uses IAlarm alarm;
-    uses timer_inf hello;
+    uses ITimer timer;
     dataport Buf settings;
 }

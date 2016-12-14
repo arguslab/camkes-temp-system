@@ -8,6 +8,8 @@
  * @TAG(NICTA_BSD)
  */
 
-procedure timer_inf {
-	void sleep(in int sec);
+procedure ITimer {
+	void sleep_ns(in int nanoseconds);
+  void sleep_ms(in int milliseconds);
+  void sleep_s(in int seconds);
 };

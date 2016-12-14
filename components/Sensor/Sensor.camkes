@@ -9,5 +9,5 @@ import "../../interfaces/ITimer.idl4";
 component Sensor {
   control;
   provides ISensor data;
-  uses timer_inf hello;
+  uses ITimer timer;
 }

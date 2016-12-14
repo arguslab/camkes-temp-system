@@ -20,7 +20,7 @@ int run()
 {
   while(1)
   {
-    hello_sleep(1);
+    timer_sleep_s(1);
 
     if(current_temp >= 90)
     {
