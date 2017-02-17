@@ -14,5 +14,6 @@ component Controller {
     uses IHeater heater;
     uses IAlarm alarm;
     uses ITimer timer;
+    provides ISensor data;
     dataport Buf settings;
 }

@@ -12,71 +12,67 @@ TARGETS := $(notdir ${SOURCE_DIR}).cdl
 ADL := temp_system.camkes
 
 Alarm_CFILES := \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Alarm/src/*.c)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Alarm/src/plat/${PLAT}/*.c)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Alarm/src/arch/${ARCH}/*.c))
+    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Alarm/src/*.c))
 
-Alarm_ASMFILES := \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Alarm/crt/arch-${ARCH}/crt0.S)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Alarm/src/*.S)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Alarm/src/arch/${ARCH}/*.S)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Alarm/src/plat/${PLAT}/*.S))
+Alarm_HFILES := \
+	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/common/*.h)) \
+	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Alarm/include/*.h))
+
 
 Controller_CFILES := \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Controller/src/*.c)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Controller/src/plat/${PLAT}/*.c)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Controller/src/arch/${ARCH}/*.c))
+    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Controller/src/*.c))
 
-Controller_ASMFILES := \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Controller/crt/arch-${ARCH}/crt0.S)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Controller/src/*.S)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Controller/src/arch/${ARCH}/*.S)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Controller/src/plat/${PLAT}/*.S))
+Controller_HFILES := \
+	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/common/*.h)) \
+	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Controller/include/*.h))
+
 
 Heater_CFILES := \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Heater/src/*.c)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Heater/src/plat/${PLAT}/*.c)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Heater/src/arch/${ARCH}/*.c))
+    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Heater/src/*.c))
 
-Heater_ASMFILES := \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Heater/crt/arch-${ARCH}/crt0.S)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Heater/src/*.S)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Heater/src/arch/${ARCH}/*.S)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Heater/src/plat/${PLAT}/*.S))
+Heater_HFILES := \
+	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/common/*.h)) \
+	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Heater/include/*.h))
+
 
 Sensor_CFILES := \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Sensor/src/*.c)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Sensor/src/plat/${PLAT}/*.c)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Sensor/src/arch/${ARCH}/*.c))
+    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Sensor/src/*.c))
 
-Sensor_ASMFILES := \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Sensor/crt/arch-${ARCH}/crt0.S)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Sensor/src/*.S)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Sensor/src/arch/${ARCH}/*.S)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Sensor/src/plat/${PLAT}/*.S))
+Sensor_HFILES := \
+	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/common/*.h)) \
+	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Sensor/include/*.h))
+
+
+SoC_CFILES := \
+    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/SoC/src/*.c)) \
+    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/SoC/src/plat/${PLAT}/*.c)) \
+    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/SoC/src/arch/${ARCH}/*.c))
+
+SoC_HFILES := \
+	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/common/*.h)) \
+	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/SoC/include/*.h)) \
+	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/SoC/include/plat/${PLAT}/*.h)) \
+    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/SoC/include/arch/${ARCH}/*.h))
+
 
 Timer_CFILES := \
     $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Timer/src/*.c)) \
     $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Timer/src/plat/${PLAT}/*.c)) \
     $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Timer/src/arch/${ARCH}/*.c))
 
-Timer_ASMFILES := \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Timer/crt/arch-${ARCH}/crt0.S)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Timer/src/*.S)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Timer/src/arch/${ARCH}/*.S)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Timer/src/plat/${PLAT}/*.S))
+Timer_HFILES := \
+	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/common/*.h)) \
+	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Timer/include/*.h)) \
+	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Timer/include/plat/${PLAT}/*.h)) \
+    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Timer/include/arch/${ARCH}/*.h))
+
 
 Webserver_CFILES := \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Webserver/src/*.c)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Webserver/src/plat/${PLAT}/*.c)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Webserver/src/arch/${ARCH}/*.c))
+    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Webserver/src/*.c))
 
-Webserver_ASMFILES := \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Webserver/crt/arch-${ARCH}/crt0.S)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Webserver/src/*.S)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Webserver/src/arch/${ARCH}/*.S)) \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Webserver/src/plat/${PLAT}/*.S))
-
+Webserver_HFILES := \
+	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/common/*.h)) \
+	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Webserver/include/*.h))
 
 
 include ${PWD}/tools/camkes/camkes.mk

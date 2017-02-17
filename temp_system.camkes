@@ -11,6 +11,7 @@ import "components/Heater/Heater.camkes";
 import "components/Sensor/Sensor.camkes";
 import "components/Timer/Timer.camkes";
 import "components/Webserver/Webserver.camkes";
+import "components/SoC/SoC.camkes";
 
 assembly {
   composition {
@@ -19,20 +20,35 @@ assembly {
     component Heater heater;
     component Sensor sensor;
     component Webserver webserver;
+
+    component SoC soc;
+    component GpioBase gpiobase;
+    component MuxBase muxbase;
     component Timerbase timerbase;
     component Timer timer;
 
-    connection seL4RPC c1(from controller.sensor, to sensor.data);
-    connection seL4RPC c2(from controller.alarm, to alarm.action);
-    connection seL4RPC c3(from controller.heater, to heater.action);
-    connection seL4RPC c4(from webserver.sensor, to sensor.data);
+
+    connection seL4RPCCall c1(from controller.sensor, to sensor.data);
+    connection seL4RPCCall c2(from controller.alarm, to alarm.action);
+    connection seL4RPCCall c3(from controller.heater, to heater.action);
+    connection seL4RPCCall c4(from webserver.controller, to controller.data);
     connection seL4SharedData c5(from webserver.settings, to controller.settings);
 
     connection seL4RPCCall c6(from sensor.timer, to timer.action);
     connection seL4RPCCall c7(from controller.timer, to timer.action);
 
+    connection seL4RPCCall c8(from heater.gpio, to soc.gpio);
+    connection seL4RPCCall c9(from alarm.gpio, to soc.gpio);
+    connection seL4RPCCall c10(from sensor.i2c, to soc.i2c_bit_bang);
+
     connection seL4HardwareMMIO timer_mem(from timer.reg, to timerbase.reg);
     connection seL4HardwareInterrupt timer_irq(from timerbase.irq, to timer.irq);
+
+    connection seL4HardwareMMIO gpio_bank0_mem(from soc.gpio0, to gpiobase.bank0);
+    connection seL4HardwareMMIO gpio_bank1_mem(from soc.gpio1, to gpiobase.bank1);
+    connection seL4HardwareMMIO gpio_bank2_mem(from soc.gpio2, to gpiobase.bank2);
+    connection seL4HardwareMMIO gpio_bank3_mem(from soc.gpio3, to gpiobase.bank3);
+    connection seL4HardwareMMIO mux_registers_mem(from soc.mux0, to muxbase.registers);
   }
   configuration {
   		c5.from_access = "RW";
@@ -47,6 +63,12 @@ assembly {
       /* timerbase stats for BB */
       timerbase.reg_attributes = "0x48040000:0x1000";
       timerbase.irq_attributes = 68;
+
+      gpiobase.bank0_attributes = "0x44e07000:0x1000";
+      gpiobase.bank1_attributes = "0x4804c000:0x1000";
+      gpiobase.bank2_attributes = "0x481ac000:0x1000";
+      gpiobase.bank3_attributes = "0x481ae000:0x1000";
+      muxbase.registers_attributes = "0x44E10000:0x1000";
 
       /* assign an initial value to semaphore */
       timer.sem_value = 0;

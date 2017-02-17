@@ -1,11 +1,23 @@
 /*------------------------------------------------------------------------------
-* Alarm.camkes
+* mux.c
 *
 *-----------------------------------------------------------------------------*/
 
-import "../../interfaces/IAlarm.idl4";
+#include <camkes.h>
+#include <SoC.h>
 
-component Alarm {
-        provides IAlarm action;
-        uses IGpio gpio;
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <sel4utils/util.h>
+
+
+void mux__init()
+{
+
+}
+
+void mux_temp()
+{
+
 }

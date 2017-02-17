@@ -27,6 +27,7 @@ void irq_callback(void *_ UNUSED)
 
 void action__init()
 {
+  printf("Timer: started.\n");
   timer_config_t config;
 
   /*

@@ -1,0 +1,20 @@
+/*------------------------------------------------------------------------------
+* Timer.camkes
+*
+*-----------------------------------------------------------------------------*/
+
+import "../../interfaces/ITimer.idl4";
+
+component Timerbase {
+  hardware;
+  dataport Buf reg;
+  emits DataAvailable irq;
+}
+
+component Timer {
+  dataport Buf reg;
+  consumes DataAvailable irq;
+  has semaphore sem;
+
+  provides ITimer action;
+}

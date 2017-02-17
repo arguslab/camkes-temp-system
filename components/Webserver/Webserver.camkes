@@ -7,6 +7,6 @@ import "../../interfaces/ISensor.idl4";
 
 component Webserver {
     control;
-    uses ISensor sensor;
+    uses ISensor controller;
     dataport Buf settings;
 }

@@ -12,7 +12,15 @@
 #include <string.h>
 
 
+void action__init()
+{
+    //gpio_init_pin(49, 0);
+}
+
 void action_set_speed(int v)
 {
-  printf("Heater: fan set to %i RPM.\n", v);
+    static int state = 0;
+    printf("Heater: fan set to %i RPM.\n", v);
+    //gpio_set_pin(49, state);
+    state = ~state;
 }

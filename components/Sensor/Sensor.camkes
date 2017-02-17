@@ -10,4 +10,5 @@ component Sensor {
   control;
   provides ISensor data;
   uses ITimer timer;
+  uses II2c i2c;
 }
