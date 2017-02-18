@@ -11,16 +11,24 @@
 #include <camkes.h>
 #include <string.h>
 
+#define FAN_PIN (115)
 
 void action__init()
 {
-    //gpio_init_pin(49, 0);
+    gpio_init_pin(FAN_PIN, 0);
 }
 
 void action_set_speed(int v)
 {
-    static int state = 0;
-    printf("Heater: fan set to %i RPM.\n", v);
-    //gpio_set_pin(49, state);
-    state = ~state;
+    /* right now this is just an on/off function, in the future we may be able to control speed. */
+    if(v)
+    {
+        printf("Heater: fan set to ON.\n", v);
+        gpio_set_pin(FAN_PIN, 1);
+    }
+    else
+    {
+        printf("Heater: fan set to OFF.\n", v);
+        gpio_set_pin(FAN_PIN, 0);
+    }
 }

@@ -11,10 +11,12 @@ int run()
 {
   printf("Webserver: started.\n");
 
-  *(int *)settings = 22;
+  *(int *)settings = 21;
 
   /* sensor data is routed through the controller to match minix implementation. */
   printf("Webserver: read data %i\n", controller_read());
+
+
 
 
 #ifdef DEADLOCK_ATTACK
@@ -41,5 +43,11 @@ int run()
 #endif
 
 
-  return 0;
+    while(1)
+    {
+        printf("Webserver: input temp setpoint:");
+        scanf("%i", (int *)settings);
+    }
+
+    return 0;
 }

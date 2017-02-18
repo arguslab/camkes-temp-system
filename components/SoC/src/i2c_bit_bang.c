@@ -16,7 +16,8 @@ int addr; //Temporary since i2c_bitbang only implements start read and start wri
 
 void i2c_bit_bang__init()
 {
-    i2c_bb_init(&gpio_driver, 66, 67, &i2c_bb, &i2c_bus);
+    //i2c_bb_init(&gpio_driver, /*scl*/ 66, /*sda*/ 67, &i2c_bb, &i2c_bus);
+    i2c_bb_init(&gpio_driver, 13, 12, &i2c_bb, &i2c_bus);
 }
 
 int i2c_bit_bang_set_speed(int bps)

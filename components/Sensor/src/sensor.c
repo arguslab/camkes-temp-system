@@ -73,7 +73,7 @@ static uint16_t read_eeprom_reg(unsigned char reg)
 
     msg = i2c_read(2);
 
-    printf("Sensor: msg len=%i, msg.buf[0]=%i, msg.buf[1]=%i\n", msg.len, msg.buf[0], msg.buf[1]);
+    //printf("Sensor: msg len=%i, msg.buf[0]=%i, msg.buf[1]=%i\n", msg.len, msg.buf[0], msg.buf[1]);
 
     //return ((uint16_t)msg.buf[1] << 8) | (uint16_t)msg.buf[0];
     return ((uint16_t)msg.buf[0] << 8) | (uint16_t)msg.buf[1];
