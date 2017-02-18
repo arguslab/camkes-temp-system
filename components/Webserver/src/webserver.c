@@ -11,7 +11,7 @@ int run()
 {
   printf("Webserver: started.\n");
 
-  *(int *)settings = 21;
+  *(int *)settings = 217;
 
   /* sensor data is routed through the controller to match minix implementation. */
   printf("Webserver: read data %i\n", controller_read());
@@ -41,13 +41,6 @@ int run()
 
 
 #endif
-
-
-    while(1)
-    {
-        printf("Webserver: input temp setpoint:");
-        scanf("%i", (int *)settings);
-    }
 
     return 0;
 }

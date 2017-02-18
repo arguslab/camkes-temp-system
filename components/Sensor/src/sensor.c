@@ -60,7 +60,7 @@ struct calibration
 	int16_t md;
 } cal;
 
-static int32_t current_temp = 72;
+static int32_t current_temp = 0;
 
 
 static uint16_t read_eeprom_reg(unsigned char reg)
@@ -143,7 +143,7 @@ int run()
 
     while(1)
     {
-        timer_sleep_s(1);
+        timer_sleep_ms(250);
 
         uint16_t ut = read_temp(5);
 
@@ -153,7 +153,7 @@ int run()
     	int32_t b5 = x1 + x2;
     	current_temp = (b5 + 8) / (1 << 4);
 
-        printf("Sensor: temp=%d.%01d\n", current_temp / 10, current_temp % 10);
+        //printf("Sensor: temp=%d.%01d\n", current_temp / 10, current_temp % 10);
 
     	/* save the result */
 

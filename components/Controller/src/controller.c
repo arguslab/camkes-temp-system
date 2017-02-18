@@ -20,8 +20,8 @@ int run()
     while(1)
     {
         timer_sleep_s(1);
-        data = sensor_read()/10;
-        printf("Controller: sensor reads %i degrees. \r\n",  data);
+        data = sensor_read();
+        printf("Controller: sensor reads %d.%01d degrees. \r\n",  data/10, data % 10);
 
         if(heater_started)
         {
@@ -48,6 +48,7 @@ int run()
             if(alarm_started)
             {
                 alarm_stop();
+                alarm_started = 0;
             }
 
         }
