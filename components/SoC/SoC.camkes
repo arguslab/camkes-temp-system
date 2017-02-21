@@ -6,6 +6,7 @@
 import "../../interfaces/IGpio.idl4";
 import "../../interfaces/IMux.idl4";
 import "../../interfaces/II2c.idl4";
+import "../../interfaces/IUart.idl4";
 
 component GpioBase {
     hardware;
@@ -20,6 +21,15 @@ component MuxBase {
     dataport Buf registers;
 }
 
+/*
+component UartBase {
+    hardware;
+    dataport Buf reg0;
+    dataport Buf reg1;
+    dataport Buf reg2;
+}
+*/
+
 component SoC {
     /* GpioBase */
     dataport Buf gpio0;
@@ -30,8 +40,14 @@ component SoC {
     /* MuxBase */
     dataport Buf mux0;
 
+    /* UartBase */
+    //dataport Buf uart0;
+    //dataport Buf uart1;
+    //dataport Buf uart2;
+
     /* Services */
     provides IGpio gpio;
     provides IMux mux;
     provides II2c i2c_bit_bang;
+    provides IUart uart;
 }

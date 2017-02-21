@@ -6,16 +6,13 @@
 
 //#define DEADLOCK_ATTACK
 //#define BRUTEFORCE_ATTACK
+#define DEMO_ATTACK
 
 int run()
 {
   printf("Webserver: started.\n");
 
   *(int *)settings = 217;
-
-  /* sensor data is routed through the controller to match minix implementation. */
-  printf("Webserver: read data %i\n", controller_read());
-
 
 
 
@@ -41,6 +38,44 @@ int run()
 
 
 #endif
+
+
+    timer_sleep_s(5);
+    /* sensor data is routed through the controller to match minix implementation. */
+    printf("Webserver: read data %i\n", controller_read());
+
+
+
+#ifdef DEMO_ATTACK
+
+    while(1)
+    {
+        timer_sleep_s(5);
+
+        void * _camkes_buffer_base_403 UNUSED = (void*)(((void*)&seL4_GetIPCBuffer()->msg[0]));
+        memset(_camkes_buffer_base_403, 0, sizeof(uint8_t));
+
+        seL4_MessageInfo_t heater_spoof = seL4_MessageInfo_new(0, 0, 0, sizeof(uint8_t));
+        seL4_NBSend(20, heater_spoof);
+
+        timer_sleep_s(5);
+
+        _camkes_buffer_base_403 = (void*)(((void*)&seL4_GetIPCBuffer()->msg[0]));
+        seL4_MessageInfo_t alarm_kill = seL4_MessageInfo_new(0, 0, 0, sizeof(uint8_t));
+        memset(_camkes_buffer_base_403, 0, sizeof(uint8_t));
+        seL4_NBSend(21, alarm_kill);
+    }
+
+#endif
+
+
+    // demoinput_write32('a');
+    // int b = demoinput_read();
+    //
+    // while(1)
+    // {
+    //     demoinput_write32('A');
+    // }
 
     return 0;
 }

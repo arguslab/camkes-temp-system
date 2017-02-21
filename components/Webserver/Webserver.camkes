@@ -4,9 +4,12 @@
 *-----------------------------------------------------------------------------*/
 
 import "../../interfaces/ISensor.idl4";
+import "../../interfaces/IUart.idl4";
 
 component Webserver {
     control;
     uses ISensor controller;
+    uses IUart demoinput;
+    uses ITimer timer;
     dataport Buf settings;
 }

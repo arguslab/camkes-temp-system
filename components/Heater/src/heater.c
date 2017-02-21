@@ -23,12 +23,12 @@ void action_set_speed(int v)
     /* right now this is just an on/off function, in the future we may be able to control speed. */
     if(v)
     {
-        printf("Heater: fan set to ON.\n", v);
+        printf("Heater: fan set to ON.\n");
         gpio_set_pin(FAN_PIN, 1);
     }
     else
     {
-        printf("Heater: fan set to OFF.\n", v);
+        printf("Heater: fan set to OFF.\n");
         gpio_set_pin(FAN_PIN, 0);
     }
 }

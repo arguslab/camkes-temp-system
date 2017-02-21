@@ -24,6 +24,7 @@ assembly {
     component SoC soc;
     component GpioBase gpiobase;
     component MuxBase muxbase;
+    //component UartBase uartbase;
     component Timerbase timerbase;
     component Timer timer;
 
@@ -37,9 +38,14 @@ assembly {
     connection seL4RPCCall c6(from sensor.timer, to timer.action);
     connection seL4RPCCall c7(from controller.timer, to timer.action);
 
+
     connection seL4RPCCall c8(from heater.gpio, to soc.gpio);
     connection seL4RPCCall c9(from alarm.gpio, to soc.gpio);
     connection seL4RPCCall c10(from sensor.i2c, to soc.i2c_bit_bang);
+    connection seL4RPCCall c11(from webserver.demoinput, to soc.uart);
+
+    connection seL4RPCCall c12(from webserver.timer, to timer.action);
+
 
     connection seL4HardwareMMIO timer_mem(from timer.reg, to timerbase.reg);
     connection seL4HardwareInterrupt timer_irq(from timerbase.irq, to timer.irq);
@@ -49,6 +55,10 @@ assembly {
     connection seL4HardwareMMIO gpio_bank2_mem(from soc.gpio2, to gpiobase.bank2);
     connection seL4HardwareMMIO gpio_bank3_mem(from soc.gpio3, to gpiobase.bank3);
     connection seL4HardwareMMIO mux_registers_mem(from soc.mux0, to muxbase.registers);
+
+    //connection seL4HardwareMMIO uart0_mem(from soc.uart0, to uartbase.reg0);
+    //connection seL4HardwareMMIO uart1_mem(from soc.uart1, to uartbase.reg1);
+    //connection seL4HardwareMMIO uart2_mem(from soc.uart2, to uartbase.reg2);
   }
   configuration {
   		c5.from_access = "RW";
@@ -69,6 +79,9 @@ assembly {
       gpiobase.bank2_attributes = "0x481ac000:0x1000";
       gpiobase.bank3_attributes = "0x481ae000:0x1000";
       muxbase.registers_attributes = "0x44E10000:0x1000";
+      //uartbase.reg0_attributes = "0x44E09000:0x1000";
+      //uartbase.reg1_attributes = "0x48022000:0x1000";
+      //uartbase.reg2_attributes = "0x48024000:0x1000";
 
       /* assign an initial value to semaphore */
       timer.sem_value = 0;
