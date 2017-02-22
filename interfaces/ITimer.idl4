@@ -9,7 +9,7 @@
  */
 
 procedure ITimer {
-	void sleep_ns(in int nanoseconds);
-  void sleep_ms(in int milliseconds);
-  void sleep_s(in int seconds);
+    void sleep_ns(in unsigned int nanoseconds);
+    void sleep_ms(in unsigned int milliseconds);
+    void sleep_s(in unsigned int seconds);
 };

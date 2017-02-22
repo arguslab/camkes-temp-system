@@ -7,22 +7,22 @@ import "../../interfaces/IGpio.idl4";
 import "../../interfaces/IMux.idl4";
 import "../../interfaces/II2c.idl4";
 import "../../interfaces/IUart.idl4";
+import "../../interfaces/ITimer.idl4";
 
-component GpioBase {
+component HWGpio {
     hardware;
-    dataport Buf bank0;
-    dataport Buf bank1;
-    dataport Buf bank2;
-    dataport Buf bank3;
-}
-
-component MuxBase {
-    hardware;
-    dataport Buf registers;
+    dataport Buf reg;
 }
 
 /*
-component UartBase {
+component HWMux {
+    hardware;
+    dataport Buf reg;
+}
+*/
+
+/*
+component HWUart {
     hardware;
     dataport Buf reg0;
     dataport Buf reg1;
@@ -30,24 +30,40 @@ component UartBase {
 }
 */
 
+component HWTimer {
+  hardware;
+  dataport Buf reg;
+  emits DataAvailable irq;
+}
+
 component SoC {
-    /* GpioBase */
+    /* HWGpio */
     dataport Buf gpio0;
     dataport Buf gpio1;
     dataport Buf gpio2;
     dataport Buf gpio3;
 
-    /* MuxBase */
-    dataport Buf mux0;
+    /* HWMux */
+    //dataport Buf mux0;
 
-    /* UartBase */
+    /* HWUart */
     //dataport Buf uart0;
     //dataport Buf uart1;
     //dataport Buf uart2;
+
+    /* HWTimer */
+    dataport Buf timer2reg;
+    dataport Buf timer3reg;
+    consumes DataAvailable timer2irq;
+    consumes DataAvailable timer3irq;
+    has semaphore timer2sem;
+    has semaphore timer3sem;
 
     /* Services */
     provides IGpio gpio;
     provides IMux mux;
     provides II2c i2c_bit_bang;
     provides IUart uart;
+    provides ITimer timer2;
+    provides ITimer timer3;
 }

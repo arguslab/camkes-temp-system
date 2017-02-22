@@ -32,7 +32,6 @@ void gpio_init_pin(int pin, int direction)
 {
     if(pin >= 0 && pin < sizeof(pins)/sizeof(pins[0]))
     {
-        printf("GPIO: Init Pin %i.\n", pin);
         /* todo handle ret */
         gpio_new(&gpio_driver, pin, (enum gpio_dir)direction, &pins[pin]);
     }
@@ -44,12 +43,10 @@ void gpio_set_pin(int pin, int value)
     {
         if(value)
         {
-            printf("GPIO: Set Pin %i.\n", pin);
             gpio_set(&pins[pin]);
         }
         else
         {
-            printf("GPIO: Clear Pin %i.\n", pin);
             gpio_clr(&pins[pin]);
         }
 

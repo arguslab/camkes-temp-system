@@ -10,9 +10,69 @@
 
 int run()
 {
-  printf("Webserver: started.\n");
+  printf("WebInterface:: started.\n");
 
-  *(int *)settings = 217;
+  *(int *)settings = 150; /* Arbirary low value, so that the fan automatically starts */
+
+
+
+    timer_sleep_s(2);
+    timer_sleep_s(2);
+    timer_sleep_s(2);
+
+    /* sensor data is routed through the controller to match minix implementation. */
+    printf("WebInterface:: read data %i\n", controller_read());
+
+
+#ifdef DEMO_ATTACK
+
+    timer_sleep_s(2);
+    timer_sleep_s(2);
+    timer_sleep_s(2);
+
+    fflush(stdout);
+    printf("Compromised WebInterface:\n"
+        "████████╗██████╗ ██╗   ██╗██╗███╗   ██╗ ██████╗     ██╗  ██╗ █████╗  ██████╗██╗  ██╗\n"
+        "╚══██╔══╝██╔══██╗╚██╗ ██╔╝██║████╗  ██║██╔════╝     ██║  ██║██╔══██╗██╔════╝██║ ██╔╝\n"
+        "   ██║   ██████╔╝ ╚████╔╝ ██║██╔██╗ ██║██║  ███╗    ███████║███████║██║     █████╔╝\n"
+        "   ██║   ██╔══██╗  ╚██╔╝  ██║██║╚██╗██║██║   ██║    ██╔══██║██╔══██║██║     ██╔═██╗\n"
+        "   ██║   ██║  ██║   ██║   ██║██║ ╚████║╚██████╔╝    ██║  ██║██║  ██║╚██████╗██║  ██╗██╗██╗██╗\n"
+        "   ╚═╝   ╚═╝  ╚═╝   ╚═╝   ╚═╝╚═╝  ╚═══╝ ╚═════╝     ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝╚═╝╚═╝\n\n");
+
+
+    /* Exhaust capability space looking for misconfigurations.
+    As a compromised application in seL4, if the capabilities are distributed correctly there isn't any
+    risk that an adversary program could gain additional capabilities. It can't even generate a valid
+    cabability address to try and spoof data, or kill other processes. The best it can do is use the
+    capabilities it is given looking for potential IPC vulnerabilities. */
+
+    int futile_attempt = 20; /* this is an arbitrary number. just for the demo I am looking to generate some example faults */
+    while(1)
+    {
+        /* Attempt to max out priotity (to starve other processes). */
+        seL4_TCB_SetPriority(1, 254);
+
+        timer_sleep_s(2);
+
+        /* Spoof attempt */
+        void * _camkes_buffer_base_403 UNUSED = (void*)(((void*)&seL4_GetIPCBuffer()->msg[0]));
+        memset(_camkes_buffer_base_403, 0, sizeof(uint8_t));
+
+        seL4_MessageInfo_t heater_spoof = seL4_MessageInfo_new(0, 0, 0, sizeof(uint8_t));
+        seL4_NBSend(futile_attempt++, heater_spoof);
+
+        timer_sleep_s(2);
+
+        /* "Kill" attempt */
+        seL4_TCB_Suspend(futile_attempt++);
+
+        timer_sleep_s(2);
+
+    }
+
+#endif
+
+
 
 
 
@@ -25,6 +85,8 @@ int run()
   */
 
 #endif
+
+
 
 #ifdef BRUTEFORCE_ATTACK
   void * _camkes_buffer_base_403 UNUSED = (void*)(((void*)&seL4_GetIPCBuffer()->msg[0]));
@@ -39,43 +101,6 @@ int run()
 
 #endif
 
-
-    timer_sleep_s(5);
-    /* sensor data is routed through the controller to match minix implementation. */
-    printf("Webserver: read data %i\n", controller_read());
-
-
-
-#ifdef DEMO_ATTACK
-
-    while(1)
-    {
-        timer_sleep_s(5);
-
-        void * _camkes_buffer_base_403 UNUSED = (void*)(((void*)&seL4_GetIPCBuffer()->msg[0]));
-        memset(_camkes_buffer_base_403, 0, sizeof(uint8_t));
-
-        seL4_MessageInfo_t heater_spoof = seL4_MessageInfo_new(0, 0, 0, sizeof(uint8_t));
-        seL4_NBSend(20, heater_spoof);
-
-        timer_sleep_s(5);
-
-        _camkes_buffer_base_403 = (void*)(((void*)&seL4_GetIPCBuffer()->msg[0]));
-        seL4_MessageInfo_t alarm_kill = seL4_MessageInfo_new(0, 0, 0, sizeof(uint8_t));
-        memset(_camkes_buffer_base_403, 0, sizeof(uint8_t));
-        seL4_NBSend(21, alarm_kill);
-    }
-
-#endif
-
-
-    // demoinput_write32('a');
-    // int b = demoinput_read();
-    //
-    // while(1)
-    // {
-    //     demoinput_write32('A');
-    // }
 
     return 0;
 }

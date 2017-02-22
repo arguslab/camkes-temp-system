@@ -9,9 +9,9 @@ import "components/Alarm/Alarm.camkes";
 import "components/Controller/Controller.camkes";
 import "components/Heater/Heater.camkes";
 import "components/Sensor/Sensor.camkes";
-import "components/Timer/Timer.camkes";
 import "components/Webserver/Webserver.camkes";
 import "components/SoC/SoC.camkes";
+
 
 assembly {
   composition {
@@ -22,11 +22,17 @@ assembly {
     component Webserver webserver;
 
     component SoC soc;
-    component GpioBase gpiobase;
-    component MuxBase muxbase;
-    //component UartBase uartbase;
-    component Timerbase timerbase;
-    component Timer timer;
+
+    component HWGpio gpioBank0;
+    component HWGpio gpioBank1;
+    component HWGpio gpioBank2;
+    component HWGpio gpioBank3;
+
+    component HWTimer timer2;
+    component HWTimer timer3;
+
+    //component HWMux hwmux;
+    //component HWUart hwuart;
 
 
     connection seL4RPCCall c1(from controller.sensor, to sensor.data);
@@ -35,55 +41,57 @@ assembly {
     connection seL4RPCCall c4(from webserver.controller, to controller.data);
     connection seL4SharedData c5(from webserver.settings, to controller.settings);
 
-    connection seL4RPCCall c6(from sensor.timer, to timer.action);
-    connection seL4RPCCall c7(from controller.timer, to timer.action);
 
+
+    connection seL4RPCCall c6(from sensor.timer, to soc.timer2);
+    connection seL4RPCCall c7(from controller.timer, to soc.timer2);
+    connection seL4RPCCall c12(from webserver.timer, to soc.timer3);
 
     connection seL4RPCCall c8(from heater.gpio, to soc.gpio);
     connection seL4RPCCall c9(from alarm.gpio, to soc.gpio);
     connection seL4RPCCall c10(from sensor.i2c, to soc.i2c_bit_bang);
     connection seL4RPCCall c11(from webserver.demoinput, to soc.uart);
 
-    connection seL4RPCCall c12(from webserver.timer, to timer.action);
+    connection seL4HardwareMMIO gpio_bank0_mem(from soc.gpio0, to gpioBank0.reg);
+    connection seL4HardwareMMIO gpio_bank1_mem(from soc.gpio1, to gpioBank1.reg);
+    connection seL4HardwareMMIO gpio_bank2_mem(from soc.gpio2, to gpioBank2.reg);
+    connection seL4HardwareMMIO gpio_bank3_mem(from soc.gpio3, to gpioBank3.reg);
 
+    connection seL4HardwareMMIO timer2_mem(from soc.timer2reg, to timer2.reg);
+    connection seL4HardwareMMIO timer3_mem(from soc.timer3reg, to timer3.reg);
 
-    connection seL4HardwareMMIO timer_mem(from timer.reg, to timerbase.reg);
-    connection seL4HardwareInterrupt timer_irq(from timerbase.irq, to timer.irq);
+    connection seL4HardwareInterrupt timer2_irq(from timer2.irq, to soc.timer2irq);
+    connection seL4HardwareInterrupt timer3_irq(from timer3.irq, to soc.timer3irq);
 
-    connection seL4HardwareMMIO gpio_bank0_mem(from soc.gpio0, to gpiobase.bank0);
-    connection seL4HardwareMMIO gpio_bank1_mem(from soc.gpio1, to gpiobase.bank1);
-    connection seL4HardwareMMIO gpio_bank2_mem(from soc.gpio2, to gpiobase.bank2);
-    connection seL4HardwareMMIO gpio_bank3_mem(from soc.gpio3, to gpiobase.bank3);
-    connection seL4HardwareMMIO mux_registers_mem(from soc.mux0, to muxbase.registers);
-
+    //connection seL4HardwareMMIO mux_registers_mem(from soc.mux0, to hwmux.reg);
     //connection seL4HardwareMMIO uart0_mem(from soc.uart0, to uartbase.reg0);
     //connection seL4HardwareMMIO uart1_mem(from soc.uart1, to uartbase.reg1);
     //connection seL4HardwareMMIO uart2_mem(from soc.uart2, to uartbase.reg2);
   }
   configuration {
-  		c5.from_access = "RW";
-  		c5.to_access = "R";
+		c5.from_access = "RW";
+		c5.to_access = "R";
 
-      /* find out the device memory address and IRQ number from the hardware data sheet. look at
-      * https://github.com/seL4/camkes-tool/blob/2.1.0/docs/index.md#hardware-components
-      */
-      //timerbase.reg_attributes = "0x53F98000:0x1000"; //device memory
-      //timerbase.irq_attributes	= 27;		       //Timer interrupt
+      /* Find out the device memory address and IRQ number from the hardware data sheet.
+      * See https://github.com/seL4/camkes-tool/blob/2.1.0/docs/index.md#hardware-components */
 
-      /* timerbase stats for BB */
-      timerbase.reg_attributes = "0x48040000:0x1000";
-      timerbase.irq_attributes = 68;
+      /* Configure Physical Addresses and IRQ Numbers for BB */
+      timer2.reg_attributes = "0x48040000:0x1000";
+      timer2.irq_attributes = 68;
+      timer3.reg_attributes = "0x48042000:0x1000";
+      timer3.irq_attributes = 69;
 
-      gpiobase.bank0_attributes = "0x44e07000:0x1000";
-      gpiobase.bank1_attributes = "0x4804c000:0x1000";
-      gpiobase.bank2_attributes = "0x481ac000:0x1000";
-      gpiobase.bank3_attributes = "0x481ae000:0x1000";
-      muxbase.registers_attributes = "0x44E10000:0x1000";
-      //uartbase.reg0_attributes = "0x44E09000:0x1000";
-      //uartbase.reg1_attributes = "0x48022000:0x1000";
-      //uartbase.reg2_attributes = "0x48024000:0x1000";
+      gpioBank0.reg_attributes = "0x44e07000:0x1000";
+      gpioBank1.reg_attributes = "0x4804c000:0x1000";
+      gpioBank2.reg_attributes = "0x481ac000:0x1000";
+      gpioBank3.reg_attributes = "0x481ae000:0x1000";
+      //hwmux.reg_attributes = "0x44E10000:0x1000";
+      //hwuart.reg0_attributes = "0x44E09000:0x1000";
+      //hwuart.reg1_attributes = "0x48022000:0x1000";
+      //hwuart.reg2_attributes = "0x48024000:0x1000";
 
       /* assign an initial value to semaphore */
-      timer.sem_value = 0;
+      soc.timer2sem_value = 0;
+      soc.timer3sem_value = 0;
   }
 }
