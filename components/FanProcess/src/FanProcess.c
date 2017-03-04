@@ -13,12 +13,12 @@
 
 #define FAN_PIN (115)
 
-void action__init()
+void fan__init()
 {
     gpio_init_pin(FAN_PIN, 0);
 }
 
-void action_set_speed(int v)
+void fan_cmd(int v)
 {
     /* right now this is just an on/off function, in the future we may be able to control speed. */
     if(v)

@@ -11,36 +11,36 @@
 TARGETS := $(notdir ${SOURCE_DIR}).cdl
 ADL := temp_system.camkes
 
-Alarm_CFILES := \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Alarm/src/*.c))
+AlarmProcess_CFILES := \
+    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/AlarmProcess/src/*.c))
 
-Alarm_HFILES := \
+AlarmProcess_HFILES := \
 	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/common/*.h)) \
-	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Alarm/include/*.h))
+	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/AlarmProcess/include/*.h))
 
 
-Controller_CFILES := \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Controller/src/*.c))
+TempControlProcess_CFILES := \
+    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/TempControlProcess/src/*.c))
 
-Controller_HFILES := \
+TempControlProcess_HFILES := \
 	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/common/*.h)) \
-	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Controller/include/*.h))
+	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/TempControlProcess/include/*.h))
 
 
-Heater_CFILES := \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Heater/src/*.c))
+FanProcess_CFILES := \
+    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/FanProcess/src/*.c))
 
-Heater_HFILES := \
+FanProcess_HFILES := \
 	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/common/*.h)) \
-	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Heater/include/*.h))
+	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/FanProcess/include/*.h))
 
 
-Sensor_CFILES := \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Sensor/src/*.c))
+TempSensorProcess_CFILES := \
+    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/TempSensorProcess/src/*.c))
 
-Sensor_HFILES := \
+TempSensorProcess_HFILES := \
 	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/common/*.h)) \
-	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Sensor/include/*.h))
+	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/TempSensorProcess/include/*.h))
 
 
 SoC_CFILES := \
@@ -67,12 +67,12 @@ Timer_HFILES := \
     $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Timer/include/arch/${ARCH}/*.h))
 
 
-Webserver_CFILES := \
-    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Webserver/src/*.c))
+WebInterface_CFILES := \
+    $(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/WebInterface/src/*.c))
 
-Webserver_HFILES := \
+WebInterface_HFILES := \
 	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/common/*.h)) \
-	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/Webserver/include/*.h))
+	$(patsubst ${SOURCE_DIR}/%,%,$(wildcard ${SOURCE_DIR}/components/WebInterface/include/*.h))
 
 
 include ${PWD}/tools/camkes/camkes.mk

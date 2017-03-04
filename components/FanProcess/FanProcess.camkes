@@ -1,0 +1,12 @@
+/*------------------------------------------------------------------------------
+* FanProcess.camkes
+*
+*-----------------------------------------------------------------------------*/
+
+import "../../interfaces/IFan.idl4";
+import "../../interfaces/IGpio.idl4";
+
+component FanProcess {
+        provides IFan fan;
+        uses IGpio gpio;
+}

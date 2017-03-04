@@ -1,11 +1,9 @@
 /*------------------------------------------------------------------------------
-* Heater.camkes
+* ISettings.idl4
 *
+* Settings Interface
 *-----------------------------------------------------------------------------*/
 
-import "../../interfaces/IHeater.idl4";
-
-component Heater {
-        provides IHeater action;
-        uses IGpio gpio;
-}
+procedure ISettings {
+  void publish(in int settings);
+};

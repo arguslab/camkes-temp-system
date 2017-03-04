@@ -1,0 +1,16 @@
+{
+  "uploadOnSave": true,
+  "useAtomicWrites": false,
+  "deleteLocal": false,
+  "hostname": "127.0.0.1",
+  "port": "2222",
+  "target": "/home/mint/camkes-project/apps/temp_system",
+  "ignore": [
+    ".remote-sync.json",
+    ".git/**"
+  ],
+  "username": "mint",
+  "keyfile": "/Users/richardhabeeb/.ssh/mint_vm_rsa",
+  "watch": [],
+  "transport": "scp"
+}

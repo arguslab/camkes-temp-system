@@ -1,9 +1,9 @@
 /*------------------------------------------------------------------------------
-* IHeater.idl4
+* IFan.idl4
 *
 * Heater Interface
 *-----------------------------------------------------------------------------*/
 
-procedure IHeater {
-  void set_speed(in int v);
+procedure IFan {
+  void cmd(in int v);
 };

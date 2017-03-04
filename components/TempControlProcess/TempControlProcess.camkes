@@ -1,0 +1,18 @@
+/*------------------------------------------------------------------------------
+* TempControlProcess.camkes
+*
+*-----------------------------------------------------------------------------*/
+
+import "../../interfaces/IAlarm.idl4";
+import "../../interfaces/IFan.idl4";
+import "../../interfaces/ISensor.idl4";
+import "../../interfaces/ISettings.idl4";
+import "../../interfaces/IController.idl4";
+
+component TempControlProcess {
+    provides IController current_temp;
+    provides ISensor status;
+    provides ISettings desired_temp;
+    uses IFan fan;
+    uses IAlarm alarm;
+}

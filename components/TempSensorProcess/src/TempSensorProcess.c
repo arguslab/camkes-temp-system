@@ -3,7 +3,6 @@
 *
 *-----------------------------------------------------------------------------*/
 
-
 #include <camkes.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -65,7 +64,7 @@ static int32_t current_temp = 0;
 
 static uint16_t read_eeprom_reg(unsigned char reg)
 {
-    static i2c_data_t msg;
+	static i2c_data_t msg;
     msg.buf[0] = reg;
     msg.len = 1;
 
@@ -73,9 +72,6 @@ static uint16_t read_eeprom_reg(unsigned char reg)
 
     msg = i2c_read(2);
 
-    //printf("Sensor: msg len=%i, msg.buf[0]=%i, msg.buf[1]=%i\n", msg.len, msg.buf[0], msg.buf[1]);
-
-    //return ((uint16_t)msg.buf[1] << 8) | (uint16_t)msg.buf[0];
     return ((uint16_t)msg.buf[0] << 8) | (uint16_t)msg.buf[1];
 }
 
@@ -91,12 +87,6 @@ static uint16_t read_temp(int delay_ms)
     timer_sleep_ms(delay_ms);
 
     return read_eeprom_reg(BMP180_REG_TMP);
-
-    // msg = i2c_read(2);
-    //
-    // printf("Sensor: msg len=%i, msg.buf[0]=%i, msg.buf[1]=%i\n", msg.len, msg.buf[0], msg.buf[1]);
-    //
-    // return ((uint16_t)msg.buf[1] << 8) | (uint16_t)msg.buf[0];
 }
 
 static void read_calibration()
@@ -131,7 +121,7 @@ static void read_calibration()
 }
 
 
-int data_read()
+int current_temp_get()
 {
   return current_temp;
 }
@@ -143,7 +133,7 @@ int run()
 
     while(1)
     {
-        timer_sleep_ms(250);
+        timer_sleep_ms(500);
 
         uint16_t ut = read_temp(5);
 
@@ -153,30 +143,7 @@ int run()
     	int32_t b5 = x1 + x2;
     	current_temp = (b5 + 8) / (1 << 4);
 
-        //printf("Sensor: temp=%d.%01d\n", current_temp / 10, current_temp % 10);
-
-    	/* save the result */
-
-        // msg.buf[0] = CTRL_REG;
-        // msg.buf[1] = BMP180_TMP_READ_CMD;
-        // msg.len = 2;
-        // i2c_write(msg);
-        // msg = i2c_read(2);
-
-
-
-
-        // if(current_temp >= 90)
-        // {
-        //     temp_swing = -1;
-        // }
-        // else if(current_temp <= 60)
-        // {
-        //     temp_swing = 1;
-        // }
-        //
-        // current_temp += temp_swing;
-
+		current_temp_send(current_temp);
     }
 
     return 0;

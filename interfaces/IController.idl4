@@ -1,11 +1,9 @@
 /*------------------------------------------------------------------------------
-* Alarm.camkes
+* IController.idl4
 *
+* Controller Interface
 *-----------------------------------------------------------------------------*/
 
-import "../../interfaces/IAlarm.idl4";
-
-component Alarm {
-        provides IAlarm action;
-        uses IGpio gpio;
-}
+procedure IController {
+  void send(in int temp);
+};

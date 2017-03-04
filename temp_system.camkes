@@ -5,73 +5,67 @@
 
 import <std_connector.camkes>;
 
-import "components/Alarm/Alarm.camkes";
-import "components/Controller/Controller.camkes";
-import "components/Heater/Heater.camkes";
-import "components/Sensor/Sensor.camkes";
-import "components/Webserver/Webserver.camkes";
+import "components/AlarmProcess/AlarmProcess.camkes";
+import "components/TempControlProcess/TempControlProcess.camkes";
+import "components/FanProcess/FanProcess.camkes";
+import "components/TempSensorProcess/TempSensorProcess.camkes";
+import "components/WebInterface/WebInterface.camkes";
 import "components/SoC/SoC.camkes";
 
 
 assembly {
   composition {
-    component Alarm alarm;
-    component Controller controller;
-    component Heater heater;
-    component Sensor sensor;
-    component Webserver webserver;
+    /* Application Components */
+    component AlarmProcess alarmProc;
+    component TempControlProcess tempProc;
+    component FanProcess fanProc;
+    component TempSensorProcess tempSensProc;
+    component WebInterface webInterface;
 
+    /* Driver Components */
     component SoC soc;
-
     component HWGpio gpioBank0;
     component HWGpio gpioBank1;
     component HWGpio gpioBank2;
     component HWGpio gpioBank3;
-
     component HWTimer timer2;
     component HWTimer timer3;
-
     //component HWMux hwmux;
     //component HWUart hwuart;
 
+    /* Application Policy */
+    connection seL4RPCCall t_t(from tempSensProc.current_temp, to tempProc.current_temp);
+    connection seL4RPCCall t_a(from tempProc.alarm, to alarmProc.alarm);
+    connection seL4RPCCall t_f(from tempProc.fan, to fanProc.fan);
+    connection seL4RPCCall t_w(from webInterface.status, to tempProc.status);
+    connection seL4RPCCall w_t(from webInterface.desired_temp, to tempProc.desired_temp);
 
-    connection seL4RPCCall c1(from controller.sensor, to sensor.data);
-    connection seL4RPCCall c2(from controller.alarm, to alarm.action);
-    connection seL4RPCCall c3(from controller.heater, to heater.action);
-    connection seL4RPCCall c4(from webserver.controller, to controller.data);
-    connection seL4SharedData c5(from webserver.settings, to controller.settings);
 
+    /* Driver Policy */
+    connection seL4RPCCall t2(from tempSensProc.timer, to soc.timer2);
+    connection seL4RPCCall t3(from webInterface.timer, to soc.timer3);
+    connection seL4RPCCall f_g(from fanProc.gpio, to soc.gpio);
+    connection seL4RPCCall a_g(from alarmProc.gpio, to soc.gpio);
+    connection seL4RPCCall s_i(from tempSensProc.i2c, to soc.i2c_bit_bang);
 
-
-    connection seL4RPCCall c6(from sensor.timer, to soc.timer2);
-    connection seL4RPCCall c7(from controller.timer, to soc.timer2);
-    connection seL4RPCCall c12(from webserver.timer, to soc.timer3);
-
-    connection seL4RPCCall c8(from heater.gpio, to soc.gpio);
-    connection seL4RPCCall c9(from alarm.gpio, to soc.gpio);
-    connection seL4RPCCall c10(from sensor.i2c, to soc.i2c_bit_bang);
-    connection seL4RPCCall c11(from webserver.demoinput, to soc.uart);
-
+    /* Driver Memory Mapping */
     connection seL4HardwareMMIO gpio_bank0_mem(from soc.gpio0, to gpioBank0.reg);
     connection seL4HardwareMMIO gpio_bank1_mem(from soc.gpio1, to gpioBank1.reg);
     connection seL4HardwareMMIO gpio_bank2_mem(from soc.gpio2, to gpioBank2.reg);
     connection seL4HardwareMMIO gpio_bank3_mem(from soc.gpio3, to gpioBank3.reg);
-
     connection seL4HardwareMMIO timer2_mem(from soc.timer2reg, to timer2.reg);
     connection seL4HardwareMMIO timer3_mem(from soc.timer3reg, to timer3.reg);
-
-    connection seL4HardwareInterrupt timer2_irq(from timer2.irq, to soc.timer2irq);
-    connection seL4HardwareInterrupt timer3_irq(from timer3.irq, to soc.timer3irq);
-
     //connection seL4HardwareMMIO mux_registers_mem(from soc.mux0, to hwmux.reg);
     //connection seL4HardwareMMIO uart0_mem(from soc.uart0, to uartbase.reg0);
     //connection seL4HardwareMMIO uart1_mem(from soc.uart1, to uartbase.reg1);
     //connection seL4HardwareMMIO uart2_mem(from soc.uart2, to uartbase.reg2);
+
+    /* Driver Interrupt Mapping */
+    connection seL4HardwareInterrupt timer2_irq(from timer2.irq, to soc.timer2irq);
+    connection seL4HardwareInterrupt timer3_irq(from timer3.irq, to soc.timer3irq);
+
   }
   configuration {
-		c5.from_access = "RW";
-		c5.to_access = "R";
-
       /* Find out the device memory address and IRQ number from the hardware data sheet.
       * See https://github.com/seL4/camkes-tool/blob/2.1.0/docs/index.md#hardware-components */
 

@@ -1,0 +1,12 @@
+/*------------------------------------------------------------------------------
+* AlarmProcess.camkes
+*
+*-----------------------------------------------------------------------------*/
+
+import "../../interfaces/IGpio.idl4";
+import "../../interfaces/IAlarm.idl4";
+
+component AlarmProcess {
+    provides IAlarm alarm;
+    uses IGpio gpio;
+}

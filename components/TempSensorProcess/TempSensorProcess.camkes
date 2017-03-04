@@ -1,14 +1,14 @@
 /*------------------------------------------------------------------------------
-* Sensor.camkes
+* TempSensorProcess.camkes
 *
 *-----------------------------------------------------------------------------*/
 
-import "../../interfaces/ISensor.idl4";
+import "../../interfaces/IController.idl4";
 import "../../interfaces/ITimer.idl4";
 
-component Sensor {
+component TempSensorProcess {
   control;
-  provides ISensor data;
+  uses IController current_temp;
   uses ITimer timer;
   uses II2c i2c;
 }
