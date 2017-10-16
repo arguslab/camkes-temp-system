@@ -15,6 +15,28 @@ char fan_started;
 char time_since_fan_started;
 int setpoint;
 
+#define RED   "\x1B[31m"
+#define GRN   "\x1B[32m"
+#define YEL   "\x1B[33m"
+#define BLU   "\x1B[34m"
+#define MAG   "\x1B[35m"
+#define CYN   "\x1B[36m"
+#define WHT   "\x1B[37m"
+#define RESET "\x1B[0m"
+
+
+static void printToCoordinates(int x, int y, char* text)
+{
+    printf("\033[%d;%dH%s\n", y, x, text);
+}
+
+static char output[100];
+static void prettyPrint(char* text)
+{
+    sprintf(output, GRN "Controller: " RESET "%s   ", text);
+    printToCoordinates(0, 5, output);
+}
+
 int status_get()
 {
   return data;
@@ -27,7 +49,7 @@ void desired_temp_publish(int settings)
 
 void current_temp__init()
 {
-    printf("Controller: started.\n");
+    prettyPrint("started.");
 
     data = 0;
     alarm_started = 0;
@@ -43,11 +65,15 @@ void current_temp__init()
     }
 }
 
+
+
 void current_temp_send(int temp)
 {
     data = temp;
 
-    printf("Controller: sensor reads %d.%01d degrees. \r\n",  data/10, data % 10);
+    static char buf[100];
+    sprintf(buf, "Sensor reads %d.%01d degrees.",  data/10, data % 10);
+    prettyPrint(buf);
 
     if(fan_started)
     {
